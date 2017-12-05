@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BBCDA514-2397-4A52-A838-82A1A893BE43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Test_Task_Systems.DataAccess</RootNamespace>
+    <AssemblyName>Test_Task_Systems.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contexts\SystemADbContext.cs" />
+    <Compile Include="Contexts\SystemBDbContext.cs" />
+    <Compile Include="Contexts\SystemCDbContext.cs" />
+    <Compile Include="Entities\AgentViewModel.cs" />
+    <Compile Include="Entities\BeneficiaryViewModel.cs" />
+    <Compile Include="Entities\InsurancePolicyViewModel.cs" />
+    <Compile Include="Entities\InsurerViewModel.cs" />
+    <Compile Include="Entities\SystemA\Beneficiary.cs" />
+    <Compile Include="Entities\SystemA\InsurancePolicy.cs" />
+    <Compile Include="Entities\SystemA\Insurer.cs" />
+    <Compile Include="Entities\SystemB\Agent.cs" />
+    <Compile Include="Entities\SystemB\InsurancePolicy.cs" />
+    <Compile Include="Entities\SystemB\Insurer.cs" />
+    <Compile Include="Entities\SystemC\Agent.cs" />
+    <Compile Include="Entities\SystemC\Beneficiary.cs" />
+    <Compile Include="Entities\SystemC\InsurancePolicy.cs" />
+    <Compile Include="Entities\SystemC\Insurer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemADbContextMigrations\201712051433097_init.cs" />
+    <Compile Include="SystemADbContextMigrations\201712051433097_init.Designer.cs">
+      <DependentUpon>201712051433097_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemADbContextMigrations\Configuration.cs" />
+    <Compile Include="SystemBDbContextMigrations\201712051433456_init.cs" />
+    <Compile Include="SystemBDbContextMigrations\201712051433456_init.Designer.cs">
+      <DependentUpon>201712051433456_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemBDbContextMigrations\Configuration.cs" />
+    <Compile Include="SystemCDbContextMigrations\201712051434075_init.cs" />
+    <Compile Include="SystemCDbContextMigrations\201712051434075_init.Designer.cs">
+      <DependentUpon>201712051434075_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemCDbContextMigrations\Configuration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SystemADbContextMigrations\201712051433097_init.resx">
+      <DependentUpon>201712051433097_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemBDbContextMigrations\201712051433456_init.resx">
+      <DependentUpon>201712051433456_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemCDbContextMigrations\201712051434075_init.resx">
+      <DependentUpon>201712051434075_init.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

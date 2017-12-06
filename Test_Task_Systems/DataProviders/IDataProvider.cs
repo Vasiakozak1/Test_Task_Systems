@@ -10,8 +10,8 @@ namespace Test_Task_Systems.DataProviders
     {
         InsurerViewModel GetInsurerByPhone(string phone);
         InsurancePolicyViewModel GetPolicyByInsurerPhone(string phone);
-        IEnumerable<InsurancePolicyViewModel> GetActualPolicies();
-        IEnumerable<BeneficiaryViewModel> GetBeneficiariesByPolicy();
-        InsurancePolicyViewModel GetPolicyByAgent();
+        IList<InsurancePolicyViewModel> GetActualPolicies();
+        IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyId);
+        IList<InsurancePolicyViewModel> GetPolicyByAgent(string agentName);
     }
 }

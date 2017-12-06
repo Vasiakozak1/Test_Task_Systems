@@ -214,11 +214,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SystemsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataProviders\ConnectionService.cs" />
+    <Compile Include="DataProviders\DataProviderCollection.cs" />
     <Compile Include="DataProviders\IConnectionService.cs" />
     <Compile Include="DataProviders\IDataProvider.cs" />
+    <Compile Include="DataProviders\JoinDataProvider.cs" />
+    <Compile Include="DataProviders\MergeExtensions.cs" />
     <Compile Include="DataProviders\SystemADataProvider.cs" />
+    <Compile Include="DataProviders\SystemBDataProvider.cs" />
+    <Compile Include="DataProviders\SystemCDataProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

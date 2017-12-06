@@ -7,27 +7,39 @@ namespace Test_Task_Systems.DataProviders
 {
     public class ConnectionService : IConnectionService
     {
+        private ConnectionStringSettingsCollection _connStrings;
+        private string _currentConnStr;
+        public ConnectionService()
+        {
+            this._connStrings = ConfigurationManager.ConnectionStrings;
+        }
+
         public ICollection<string> GetAvailableDatabases()
         {
             IList<string> databasesNames = new List<string>();
-            var connStrings = ConfigurationManager.ConnectionStrings;
-            for (int i = 0; i < connStrings.Count; i++) 
+            for (int i = 0; i < _connStrings.Count; i++) 
             {
-                databasesNames.Add(connStrings[i].Name);
+                databasesNames.Add(_connStrings[i].Name);
             }
             return databasesNames;
         }
 
-        private string _currentConnStr;
 
         public string GetConnectionString()
         {
-            throw new NotImplementedException();
+            return this._currentConnStr;
         }
 
         public void SetCurrentDatabase(string databaseName)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < _connStrings.Count; i++)
+            {
+                if (_connStrings[i].Name == databaseName)
+                {
+                    this._currentConnStr = _connStrings[i].ConnectionString;
+                    return;
+                }
+            }
         }
     }
 }

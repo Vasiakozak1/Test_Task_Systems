@@ -12,5 +12,9 @@ namespace Test_Task_Systems.DataAccess.Entities
         public int Number { get; set; }
         public string AgentName { get; set; }
         public bool IsActive { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTill { get; set; }
+        public InsurerViewModel Insurer { get; set; }
+        public ICollection<BeneficiaryViewModel> Beneficiaries { get; set; }
     }
 }

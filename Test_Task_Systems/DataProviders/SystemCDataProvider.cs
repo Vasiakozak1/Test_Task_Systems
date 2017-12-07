@@ -76,7 +76,7 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var agent = context.Agents.First(a => a.Name == agentName);
-                if (agent == null)
+                if (agent != null)
                 {
                     var policies = context.InsurancePolicies.Where(pol => pol.AgentId == agent.Id);
                     foreach (var pol in policies)

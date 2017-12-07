@@ -6,122 +6,107 @@ using Test_Task_Systems.DataAccess.Entities;
 namespace Test_Task_Systems.DataProviders
 {
     public static class MergeExtensions
-    {
-        public static IList<InsurancePolicyViewModel> MergePolicyLists(this IList<InsurancePolicyViewModel> first, IList<InsurancePolicyViewModel> second)
+    {      
+        public static IList<InsurancePolicyViewModel> MergePolicyLists(this IList<InsurancePolicyViewModel> firstList, IList<InsurancePolicyViewModel> secondList)
         {
-            return first.Join(second, pol => pol.Id, pol => pol.Id, (one, two) =>
-              {
-                  InsurancePolicyViewModel result = new InsurancePolicyViewModel
-                  {
-                      Id = one.Id,
-                      Number = one.Number
-                  };
-                  if (one.DateFrom == default(DateTime) || one.DateTill == default(DateTime))
-                  {
-                      result.IsActive = one.IsActive;
-                      result.DateFrom = two.DateFrom;
-                      result.DateTill = two.DateTill;
-                  }
-                  if (one.AgentName == null)
-                  {
-                      result.AgentName = two.AgentName;
-                  }
-                  else
-                  {
-                      result.AgentName = one.AgentName;
-                  }
-                  if (one.Insurer.Phone == null)
-                  {
-                      result.Insurer = two.Insurer;
-                  }
-                  else
-                  {
-                      result.Insurer = one.Insurer;
-                  }
-                  if (one.Beneficiaries == null)
-                  {
-                      result.Beneficiaries = two.Beneficiaries;
-                  }
-                  else
-                  {
-                      result.Beneficiaries = one.Beneficiaries;
-                  }
-                  return result;
-              }).ToList();
-        }
-        public static IList<BeneficiaryViewModel> MergeBeneficiaries(this IList<BeneficiaryViewModel> first, IList<BeneficiaryViewModel> second)
-        {
-            return first.Join(second, b => b.Id, b => b.Id, (one, two) =>
-              {
-                  BeneficiaryViewModel result = new BeneficiaryViewModel();
-                  if (first.Count == 0)
-                  {
-                      return one;
-                  }
-                  return two;                  
-              }).ToList();
-        }
-        public static InsurerViewModel MergeInsurers(this InsurerViewModel first, InsurerViewModel second)
-        {
-            if (first.Id == 0)
-                return second;
-            InsurerViewModel result = new InsurerViewModel
+            List<InsurancePolicyViewModel> resultPolicies = new List<InsurancePolicyViewModel>();
+            for (int i = 0; i < firstList.Count; i++)
             {
-                FirstName = first.FirstName,
-                LastName = first.LastName,
-                Id = first.Id
-            };
-            if (first.Phone == null)
-            {
-                result.Phone = second.Phone;
+                InsurancePolicyViewModel temp = new InsurancePolicyViewModel
+                {
+                    Id = firstList[i].Id,
+                    Number = firstList[i].Number,
+                    AgentName = firstList[i].AgentName,
+                    IsActive = secondList[i].IsActive,
+                    DateFrom = firstList[i].DateFrom,
+                    DateTill = firstList[i].DateTill,
+                    Insurer = firstList[i].Insurer,
+                    Beneficiaries = firstList[i].Beneficiaries
+                };
+
+                if (temp.DateFrom == default(DateTime) || temp.DateTill == default(DateTime))
+                {
+                    temp.DateFrom = secondList[i].DateFrom;
+                    temp.DateTill = secondList[i].DateTill;
+                    temp.IsActive = firstList[i].IsActive;
+                }
+                temp.IsActive = DateTime.Now >= temp.DateFrom && DateTime.Now <= temp.DateTill ? true : false;
+                if (temp.AgentName == null)
+                {
+                    temp.AgentName = secondList[i].AgentName;
+                }
+                if (temp.Insurer.Phone == null)
+                {
+                    temp.Insurer = secondList[i].Insurer;
+                }
+                if (temp.Beneficiaries == null || temp.Beneficiaries.Count == 0)
+                {
+                    temp.Beneficiaries = secondList[i].Beneficiaries;
+                }
+                resultPolicies.Add(temp);
             }
-            else
-            {
-                result.Phone = first.Phone;
-            }
-            return result;
+            return resultPolicies;
         }
+
         public static InsurancePolicyViewModel MergePolicies(this InsurancePolicyViewModel one, InsurancePolicyViewModel two)
         {
             if (one.Id == 0)
                 return two;
-            InsurancePolicyViewModel result = new InsurancePolicyViewModel
+            InsurancePolicyViewModel resultPolicy = new InsurancePolicyViewModel
             {
                 Id = one.Id,
-                Number = one.Number
+                Number = one.Number,
+                AgentName = one.AgentName,
+                IsActive = two.IsActive,
+                DateFrom = one.DateFrom,
+                DateTill = one.DateTill,
+                Insurer = one.Insurer,
+                Beneficiaries = one.Beneficiaries
             };
-            if (one.DateFrom == default(DateTime) || one.DateTill == default(DateTime))
+            if (resultPolicy.DateFrom == default(DateTime) || resultPolicy.DateTill == default(DateTime))
             {
-                result.IsActive = one.IsActive;
-                result.DateFrom = two.DateFrom;
-                result.DateTill = two.DateTill;
+                resultPolicy.DateFrom = two.DateFrom;
+                resultPolicy.DateTill = two.DateTill;
+                resultPolicy.IsActive = one.IsActive;
             }
-            if (one.AgentName == null)
+            resultPolicy.IsActive = DateTime.Now >= resultPolicy.DateFrom && DateTime.Now <= resultPolicy.DateTill ? true : false;
+            if (resultPolicy.AgentName == null)
             {
-                result.AgentName = two.AgentName;
+                resultPolicy.AgentName = two.AgentName;
             }
-            else
+            if (resultPolicy.Insurer.Phone == null)
             {
-                result.AgentName = one.AgentName;
+                resultPolicy.Insurer = two.Insurer;
             }
-            if (one.Insurer.Phone == null)
+            if (resultPolicy.Beneficiaries == null || resultPolicy.Beneficiaries.Count == 0)
             {
-                result.Insurer = two.Insurer;
+                resultPolicy.Beneficiaries = two.Beneficiaries;
             }
-            else
-            {
-                result.Insurer = one.Insurer;
-            }
-            if (one.Beneficiaries == null)
-            {
-                result.Beneficiaries = two.Beneficiaries;
-            }
-            else
-            {
-                result.Beneficiaries = one.Beneficiaries;
-            }
-
-            return result;
+            return resultPolicy;
         }
+
+        public static IList<BeneficiaryViewModel> MergeBeneficiaries(this IList<BeneficiaryViewModel> first, IList<BeneficiaryViewModel> second)
+        {
+            if (first.Count == 0)
+                return second;
+            return first;
+        }
+
+        public static InsurerViewModel MergeInsurers(this InsurerViewModel first, InsurerViewModel second)
+        {
+            if (first.Id == 0)
+                return second;
+            InsurerViewModel insurer = new InsurerViewModel
+            {
+                Id = first.Id,
+                FirstName = first.FirstName,
+                LastName = first.LastName,
+                Phone = first.Phone
+            };
+            if (insurer.Phone == null)
+                insurer.Phone = second.Phone;
+            return insurer;
+        }
+        
     }
 }

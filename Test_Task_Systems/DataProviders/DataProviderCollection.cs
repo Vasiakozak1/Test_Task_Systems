@@ -17,7 +17,6 @@ namespace Test_Task_Systems.DataProviders
             _databases = _connectionService.GetAvailableDatabases().ToArray();
             _dataProviders = new List<IDataProvider>(providers);
         }
-        
 
         public IList<InsurancePolicyViewModel> GetActualPolicies()
         {
@@ -25,7 +24,16 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                result = new List<InsurancePolicyViewModel>(_dataProviders[i].GetActualPolicies().MergePolicyLists(result));
+                if (result.Count == 0)
+                {
+                    result = new List<InsurancePolicyViewModel>(_dataProviders[i].GetActualPolicies());
+                }
+                else
+                {
+                    result = new List<InsurancePolicyViewModel>
+                        (_dataProviders[i].GetActualPolicies().MergePolicyLists(result));
+                }
+                
             }
             return result;
         }
@@ -36,7 +44,14 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyId).MergeBeneficiaries(result));
+                if (result.Count == 0)
+                {
+                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyId));
+                }
+                else
+                {
+                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyId).MergeBeneficiaries(result));
+                }
             }
             return result;
         }
@@ -48,9 +63,15 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                result = _dataProviders[i].GetInsurerByPhone(phone).MergeInsurers(result);
+                if (result.Id == 0)
+                {
+                    result = _dataProviders[i].GetInsurerByPhone(phone);
+                }
+                else
+                {
+                    result = _dataProviders[i].GetInsurerByPhone(phone).MergeInsurers(result); 
+                }
             }
-
             return result;
         }
 
@@ -61,7 +82,14 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                result = new List<InsurancePolicyViewModel>(_dataProviders[i].GetPolicyByAgent(agentName).MergePolicyLists(result));
+                if (result.Count == 0)
+                {
+                    result = new List<InsurancePolicyViewModel>(_dataProviders[i].GetPolicyByAgent(agentName));
+                }
+                else
+                {
+                    result = new List<InsurancePolicyViewModel>(_dataProviders[i].GetPolicyByAgent(agentName).MergePolicyLists(result));
+                }
             }
             return result;
         }
@@ -73,7 +101,14 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                result = _dataProviders[i].GetPolicyByInsurerPhone(phone).MergePolicies(result);
+                if (result.Id == 0)
+                {
+                    result = _dataProviders[i].GetPolicyByInsurerPhone(phone);
+                }
+                else
+                {
+                    result = _dataProviders[i].GetPolicyByInsurerPhone(phone).MergePolicies(result);
+                }
             }
             return result;
         }

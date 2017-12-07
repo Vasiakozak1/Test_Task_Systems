@@ -21,7 +21,7 @@ namespace Test_Task_Systems.DataProviders
 
             using (var context = _factory.Create())
             {
-                var policies = context.InsurancePolicies.ToArray();
+                var policies = context.InsurancePolicies;
                 if (policies != null)
                 {
                     foreach (var pol in policies)

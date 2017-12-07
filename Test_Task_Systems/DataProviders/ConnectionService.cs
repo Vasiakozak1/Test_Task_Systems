@@ -11,7 +11,11 @@ namespace Test_Task_Systems.DataProviders
         private string _currentConnStr;
         public ConnectionService()
         {
-            this._connStrings = ConfigurationManager.ConnectionStrings;
+            this._connStrings = new ConnectionStringSettingsCollection();
+            for (int i = 1; i < ConfigurationManager.ConnectionStrings.Count; i++)
+            {
+                _connStrings.Add(ConfigurationManager.ConnectionStrings[i]);
+            }
         }
 
         public ICollection<string> GetAvailableDatabases()

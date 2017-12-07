@@ -1,4 +1,5 @@
 ﻿using SimpleInjector;
+using SimpleInjector.Integration.Web.Mvc;
 using SimpleInjector.Integration.WebApi;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace Test_Task_Systems
             container.Register<IDbContextFactory<SystemCDbContext>, SystemsDbContextFactory<SystemCDbContext>>();
             container.Verify();
             
-            DependencyResolver.SetResolver(new SimpleInjectorWebApiDependencyResolver(container));
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
         }
     }

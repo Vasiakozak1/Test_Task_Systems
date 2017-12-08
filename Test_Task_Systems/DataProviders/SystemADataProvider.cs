@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data.Entity.Infrastructure;
 using System.Collections.Generic;
-using Test_Task_Systems.DataAccess.Entities;
 using Test_Task_Systems.DataAccess.Contexts;
 using System.Linq;
 using Test_Task_Systems.DataAccess.Entities.SystemA;
+using Test_Task_Systems.DataAccess.ViewModels;
+using Test_Task_Systems.Mapper;
 namespace Test_Task_Systems.DataProviders
 {
     public class SystemADataProvider : IDataProvider
@@ -17,50 +18,32 @@ namespace Test_Task_Systems.DataProviders
 
         public IList<InsurancePolicyViewModel> GetActualPolicies()
         {
-            List<InsurancePolicyViewModel> insuranceList = new List<InsurancePolicyViewModel>();
+            List<InsurancePolicyViewModel> insuranceList;
 
             using (var context = _factory.Create())
             {
                 var policies = context.InsurancePolicies;
-                if (policies != null)
+                if (policies == null)
                 {
-                    foreach (var pol in policies)
-                    {
-                        insuranceList.Add(new InsurancePolicyViewModel
-                        {
-                            Id = pol.InsurerId,
-                            Number = pol.Number,
-                            AgentName = pol.AgentName,
-                            IsActive = pol.IsActive,
-                            Insurer = this.GetInsurerViewModel(pol.Insurer),
-                            Beneficiaries = this.GetBeneficiariesViewModel(pol.Beneficiaries)
-                        });
-                    }
-                }               
+                    return null;
+                }
+                insuranceList = new List<InsurancePolicyViewModel>(policies.ToList().Select(pol => pol.MapPolicy()));
             }
             return insuranceList;
         }
 
-        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyId)
+        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyNumber)
         {
-            List<BeneficiaryViewModel> benefList = new List<BeneficiaryViewModel>();
-
             using (var context = _factory.Create())
             {
-                var beneficiaries = context.Beneficiaries.Where(b => b.InsurancePolicyId == policyId);
-                if (beneficiaries != null)
+                var policy = context.InsurancePolicies.FirstOrDefault(pol => pol.Number == policyNumber);
+                if (policy == null)
                 {
-                    foreach (var ben in beneficiaries)
-                    {
-                        benefList.Add(new BeneficiaryViewModel
-                        {
-                            Id = ben.Id,
-                            Name = ben.Name
-                        });
-                    }
-                }              
+                    return null;
+                }
+                var beneficiaries = context.Beneficiaries.Where(ben => ben.InsurancePolicyGuid == policy.InsurerGuid);
+                return new List<BeneficiaryViewModel>(beneficiaries.ToList().Select(ben => ben.MapBeneficiary()));
             }
-            return benefList;
         }
 
         public InsurerViewModel GetInsurerByPhone(string phone)
@@ -69,20 +52,11 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var insurer = context.Insurers.First(ins => ins.Phone == phone);
-                if (insurer != null)
-                {
-                    insurerViewModel = new InsurerViewModel
-                    {
-                        Id = insurer.InsurancePolicyId,
-                        FirstName = insurer.FirstName,
-                        LastName = insurer.LastName,
-                        Phone = insurer.Phone
-                    };
-                }             
+                insurerViewModel = insurer.MapInsurer();
             }
             return insurerViewModel;
         }
-
+        
         public IList<InsurancePolicyViewModel> GetPolicyByAgent(string agentName)
         {
             List<InsurancePolicyViewModel> insurancePolicyViewModelList = new List<InsurancePolicyViewModel>();
@@ -91,19 +65,8 @@ namespace Test_Task_Systems.DataProviders
                 var insPolicies = context.InsurancePolicies.Where(pol => pol.AgentName == agentName);
                 if (insPolicies != null)
                 {
-                    foreach (var pol in insPolicies)
-                    {
-                        insurancePolicyViewModelList.Add(new InsurancePolicyViewModel
-                        {
-                            Id = pol.InsurerId,
-                            Number = pol.Number,
-                            AgentName = pol.AgentName,
-                            IsActive = pol.IsActive,
-                            Insurer = this.GetInsurerViewModel(pol.Insurer),
-                            Beneficiaries = this.GetBeneficiariesViewModel(pol.Beneficiaries)
-                        });
-                    }
-                }               
+                    insurancePolicyViewModelList = new List<InsurancePolicyViewModel>(insPolicies.ToList().Select(pol => pol.MapPolicy()));
+                }
             }
             return insurancePolicyViewModelList;
         }
@@ -114,51 +77,14 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var insurer = context.Insurers.First(ins => ins.Phone == phone);
-                if (insurer != null)
+                if (insurer == null)
                 {
-                    var insPolicy = context.InsurancePolicies.First(insP => insP.InsurerId == insurer.InsurancePolicyId);
-                    if (insPolicy != null)
-                    {
-                        policyViewModel = new InsurancePolicyViewModel
-                        {
-                            Id = insPolicy.InsurerId,
-                            Number = insPolicy.Number,
-                            AgentName = insPolicy.AgentName,
-                            IsActive = insPolicy.IsActive,
-                            Insurer = this.GetInsurerViewModel(insPolicy.Insurer),
-                            Beneficiaries = this.GetBeneficiariesViewModel(insPolicy.Beneficiaries)
-                        };
-                    }
-                    
+                    return null;
                 }
+                var insPolicy = context.InsurancePolicies.First(insP => insP.InsurerGuid == insurer.InsurancePolicyGuid);
+                policyViewModel = insPolicy.MapPolicy();
             }
             return policyViewModel;
-        }
-
-        private InsurerViewModel GetInsurerViewModel(Insurer insurer)
-        {
-            if (insurer == null)
-                return null;
-            return new InsurerViewModel
-            {
-                Id = insurer.InsurancePolicyId,
-                FirstName = insurer.FirstName,
-                LastName = insurer.LastName,
-                Phone = insurer.Phone
-            };
-        }
-        private ICollection<BeneficiaryViewModel> GetBeneficiariesViewModel(ICollection<Beneficiary> beneficiaries)
-        {
-            List<BeneficiaryViewModel> bens = new List<BeneficiaryViewModel>();
-            foreach (var ben in beneficiaries)
-            {
-                bens.Add(new BeneficiaryViewModel
-                {
-                    Id = ben.Id,
-                    Name = ben.Name
-                });
-            }
-            return bens;
         }
     }
 }

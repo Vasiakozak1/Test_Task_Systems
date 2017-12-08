@@ -7,13 +7,13 @@ namespace Test_Task_Systems.DataAccess.SystemADbContextMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class secondMigration : IMigrationMetadata
+    public sealed partial class AddGuid : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(secondMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddGuid));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712071025329_secondMigration"; }
+            get { return "201712080928111_AddGuid"; }
         }
         
         string IMigrationMetadata.Source

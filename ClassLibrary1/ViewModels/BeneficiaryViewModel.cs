@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test_Task_Systems.DataAccess.Entities
+namespace Test_Task_Systems.DataAccess.ViewModels
 {
     public class BeneficiaryViewModel
     {
-        public int Id { get; set; }
+        public Guid Guid { get; set; }
         public string Name { get; set; }
     }
 }

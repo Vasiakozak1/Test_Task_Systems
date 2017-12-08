@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using Test_Task_Systems.DataAccess.Entities;
-
+using Test_Task_Systems.DataAccess.ViewModels;
 namespace Test_Task_Systems.DataProviders
 {
     public class DataProviderCollection: IDataProvider
@@ -38,7 +39,7 @@ namespace Test_Task_Systems.DataProviders
             return result;
         }
 
-        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyId)
+        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyNumber)
         {
             List<BeneficiaryViewModel> result = new List<BeneficiaryViewModel>();
             for (int i = 0; i < _dataProviders.Count; i++)
@@ -46,11 +47,11 @@ namespace Test_Task_Systems.DataProviders
                 _connectionService.SetCurrentDatabase(_databases[i]);
                 if (result.Count == 0)
                 {
-                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyId));
+                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyNumber));
                 }
                 else
                 {
-                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyId).MergeBeneficiaries(result));
+                    result = new List<BeneficiaryViewModel>(_dataProviders[i].GetBeneficiariesByPolicy(policyNumber).MergeBeneficiaries(result));
                 }
             }
             return result;
@@ -63,7 +64,7 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                if (result.Id == 0)
+                if (result.Guid == Guid.Empty)
                 {
                     result = _dataProviders[i].GetInsurerByPhone(phone);
                 }
@@ -101,7 +102,7 @@ namespace Test_Task_Systems.DataProviders
             for (int i = 0; i < _dataProviders.Count; i++)
             {
                 _connectionService.SetCurrentDatabase(_databases[i]);
-                if (result.Id == 0)
+                if (result.Guid == Guid.Empty)
                 {
                     result = _dataProviders[i].GetPolicyByInsurerPhone(phone);
                 }

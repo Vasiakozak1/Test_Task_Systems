@@ -8,6 +8,7 @@ using Test_Task_Systems.DataProviders;
 using System.Data.Entity.Infrastructure;
 using Test_Task_Systems.DataAccess.Contexts;
 using Test_Task_Systems.DataAccess.Entities;
+using Test_Task_Systems.DataAccess.ViewModels;
 namespace Test_Task_Systems.Controllers
 {
     [RoutePrefix("api/Systems")]
@@ -33,11 +34,11 @@ namespace Test_Task_Systems.Controllers
             return _provider.GetActualPolicies();
         }
 
-        [Route("GetBeneficiariesByPolicy/{policyId}")]
+        [Route("GetBeneficiariesByPolicy/{policyNumber}")]
         [HttpGet]
-        public IEnumerable<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyId)
+        public IEnumerable<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyNumber)
         {
-            return _provider.GetBeneficiariesByPolicy(policyId);
+            return _provider.GetBeneficiariesByPolicy(policyNumber);
         }
 
         [Route("GetInsurerByPhone/{phone}")]

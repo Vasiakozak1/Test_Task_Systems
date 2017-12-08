@@ -8,7 +8,7 @@ namespace Test_Task_Systems.DataAccess.Entities.SystemB
     public class Insurer
     {
         [Key, ForeignKey("InsurancePolicy")]
-        public int InsurancePolicyId { get; set; }
+        public Guid InsurancePolicyGuid { get; set; }
         public virtual InsurancePolicy InsurancePolicy { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -36,24 +36,43 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexts\SystemADbContext.cs" />
     <Compile Include="Contexts\SystemBDbContext.cs" />
     <Compile Include="Contexts\SystemCDbContext.cs" />
-    <Compile Include="Entities\AgentViewModel.cs" />
-    <Compile Include="Entities\BeneficiaryViewModel.cs" />
-    <Compile Include="Entities\InsurancePolicyViewModel.cs" />
-    <Compile Include="Entities\InsurerViewModel.cs" />
+    <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="ViewModels\BeneficiaryViewModel.cs" />
+    <Compile Include="ViewModels\InsurancePolicyViewModel.cs" />
+    <Compile Include="ViewModels\InsurerViewModel.cs" />
     <Compile Include="Entities\SystemA\Beneficiary.cs" />
     <Compile Include="Entities\SystemA\InsurancePolicy.cs" />
     <Compile Include="Entities\SystemA\Insurer.cs" />
@@ -65,31 +84,19 @@
     <Compile Include="Entities\SystemC\InsurancePolicy.cs" />
     <Compile Include="Entities\SystemC\Insurer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemADbContextMigrations\201712051433097_init.cs" />
-    <Compile Include="SystemADbContextMigrations\201712051433097_init.Designer.cs">
-      <DependentUpon>201712051433097_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SystemADbContextMigrations\201712071025329_secondMigration.cs" />
-    <Compile Include="SystemADbContextMigrations\201712071025329_secondMigration.Designer.cs">
-      <DependentUpon>201712071025329_secondMigration.cs</DependentUpon>
+    <Compile Include="SystemADbContextMigrations\201712080928111_AddGuid.cs" />
+    <Compile Include="SystemADbContextMigrations\201712080928111_AddGuid.Designer.cs">
+      <DependentUpon>201712080928111_AddGuid.cs</DependentUpon>
     </Compile>
     <Compile Include="SystemADbContextMigrations\Configuration.cs" />
-    <Compile Include="SystemBDbContextMigrations\201712051433456_init.cs" />
-    <Compile Include="SystemBDbContextMigrations\201712051433456_init.Designer.cs">
-      <DependentUpon>201712051433456_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SystemBDbContextMigrations\201712071037048_secondMigration.cs" />
-    <Compile Include="SystemBDbContextMigrations\201712071037048_secondMigration.Designer.cs">
-      <DependentUpon>201712071037048_secondMigration.cs</DependentUpon>
+    <Compile Include="SystemBDbContextMigrations\201712080929020_AddGuid.cs" />
+    <Compile Include="SystemBDbContextMigrations\201712080929020_AddGuid.Designer.cs">
+      <DependentUpon>201712080929020_AddGuid.cs</DependentUpon>
     </Compile>
     <Compile Include="SystemBDbContextMigrations\Configuration.cs" />
-    <Compile Include="SystemCDbContextMigrations\201712051434075_init.cs" />
-    <Compile Include="SystemCDbContextMigrations\201712051434075_init.Designer.cs">
-      <DependentUpon>201712051434075_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SystemCDbContextMigrations\201712071040250_secondMigration.cs" />
-    <Compile Include="SystemCDbContextMigrations\201712071040250_secondMigration.Designer.cs">
-      <DependentUpon>201712071040250_secondMigration.cs</DependentUpon>
+    <Compile Include="SystemCDbContextMigrations\201712080929350_AddGuid.cs" />
+    <Compile Include="SystemCDbContextMigrations\201712080929350_AddGuid.Designer.cs">
+      <DependentUpon>201712080929350_AddGuid.cs</DependentUpon>
     </Compile>
     <Compile Include="SystemCDbContextMigrations\Configuration.cs" />
   </ItemGroup>
@@ -98,23 +105,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SystemADbContextMigrations\201712051433097_init.resx">
-      <DependentUpon>201712051433097_init.cs</DependentUpon>
+    <EmbeddedResource Include="SystemADbContextMigrations\201712080928111_AddGuid.resx">
+      <DependentUpon>201712080928111_AddGuid.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SystemADbContextMigrations\201712071025329_secondMigration.resx">
-      <DependentUpon>201712071025329_secondMigration.cs</DependentUpon>
+    <EmbeddedResource Include="SystemBDbContextMigrations\201712080929020_AddGuid.resx">
+      <DependentUpon>201712080929020_AddGuid.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SystemBDbContextMigrations\201712051433456_init.resx">
-      <DependentUpon>201712051433456_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SystemBDbContextMigrations\201712071037048_secondMigration.resx">
-      <DependentUpon>201712071037048_secondMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SystemCDbContextMigrations\201712051434075_init.resx">
-      <DependentUpon>201712051434075_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SystemCDbContextMigrations\201712071040250_secondMigration.resx">
-      <DependentUpon>201712071040250_secondMigration.cs</DependentUpon>
+    <EmbeddedResource Include="SystemCDbContextMigrations\201712080929350_AddGuid.resx">
+      <DependentUpon>201712080929350_AddGuid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

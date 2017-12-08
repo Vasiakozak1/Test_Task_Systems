@@ -8,7 +8,7 @@ namespace Test_Task_Systems.DataAccess.Entities.SystemA
     public class InsurancePolicy
     {
         [Key, ForeignKey("Insurer")]
-        public int InsurerId { get; set; }
+        public Guid InsurerGuid { get; set; }
         public int Number { get; set; }
         public bool IsActive { get; set; }
         public string AgentName { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Test_Task_Systems.DataAccess.Entities;
 using Test_Task_Systems.DataAccess.Contexts;
 using System.Data.Entity.Infrastructure;
 using Test_Task_Systems.DataAccess.Entities.SystemB;
+using Test_Task_Systems.DataAccess.ViewModels;
+using Test_Task_Systems.Mapper;
 
 namespace Test_Task_Systems.DataProviders
 {
@@ -23,25 +24,16 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var policies = context.InsurancePolicies.ToList();
-                if (policies != null)
+                if (policies == null)
                 {
-                    foreach (var pol in policies)
-                    {
-                        policiesList.Add(new InsurancePolicyViewModel
-                        {
-                            Id = pol.InsurerId,
-                            Number = pol.Number,
-                            DateFrom = pol.DateFrom,
-                            DateTill = pol.DateTill,
-                            Insurer = this.GetInsurerViewModel(pol.Insurer)
-                        });
-                    }
+                    return null;
                 }
+                policiesList = new List<InsurancePolicyViewModel>(policies.ToList().Select(pol => pol.MapPolicy()));
             }
             return policiesList;
         }
 
-        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyId)
+        public IList<BeneficiaryViewModel> GetBeneficiariesByPolicy(int policyNumber)
         {
             return new List<BeneficiaryViewModel>();
         }
@@ -52,16 +44,7 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var insurer = context.Insurers.First(ins => ins.Phone == phone);
-                if (insurer != null)
-                {
-                    insurerViewModel = new InsurerViewModel
-                    {
-                        Id = insurer.InsurancePolicyId,
-                        FirstName = insurer.FirstName,
-                        LastName = insurer.LastName,
-                        Phone = insurer.Phone
-                    };
-                }
+                insurerViewModel = insurer.MapInsurer();
             }
             return insurerViewModel;
         }
@@ -72,20 +55,11 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var agent = context.Agents.First(a => a.Name == agentName);
-                if (agent != null && agent.InsurancePolicies != null)
+                if (agent == null || agent.InsurancePolicies == null)
                 {
-                    foreach (var pol in agent.InsurancePolicies)
-                    {
-                        policiesList.Add(new InsurancePolicyViewModel
-                        {
-                            Id = pol.InsurerId,
-                            Number = pol.Number,
-                            DateFrom = pol.DateFrom,
-                            DateTill = pol.DateTill,
-                            Insurer = this.GetInsurerViewModel(pol.Insurer)
-                        });
-                    }
+                    return null;
                 }
+                policiesList = new List<InsurancePolicyViewModel>(agent.InsurancePolicies.ToList().Select(pol => pol.MapPolicy()));
             }
             return policiesList;
         }
@@ -96,33 +70,14 @@ namespace Test_Task_Systems.DataProviders
             using (var context = _factory.Create())
             {
                 var insurer = context.Insurers.First(i => i.Phone == phone);
-                if (insurer != null)
+                if (insurer == null)
                 {
-                    var policy = context.InsurancePolicies.First(pol => pol.InsurerId == insurer.InsurancePolicyId);
-                    policyViewModel = new InsurancePolicyViewModel
-                    {
-                        Id = policy.InsurerId,
-                        Number = policy.Number,
-                        DateFrom = policy.DateFrom,
-                        DateTill = policy.DateTill,     
-                        Insurer = this.GetInsurerViewModel(policy.Insurer)
-                    };
+                    return null;
                 }
+                var policy = context.InsurancePolicies.First(pol => pol.InsurerGuid == insurer.InsurancePolicyGuid);
+                policyViewModel = policy.MapPolicy();
             }
             return policyViewModel;
-        }
-        private InsurerViewModel GetInsurerViewModel(Insurer insurer)
-        {
-            if (insurer == null)
-                return null;
-            return new InsurerViewModel
-            {
-                Id = insurer.InsurancePolicyId,
-                FirstName = insurer.FirstName,
-                LastName = insurer.LastName,
-                Phone = insurer.Phone
-            };
-        }
-        
+        }       
     }
 }
